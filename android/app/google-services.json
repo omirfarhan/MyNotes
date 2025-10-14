@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "219851680761",
+    "project_id": "miniappflutterness",
+    "storage_bucket": "miniappflutterness.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:219851680761:android:8c411bee9455367a742b28",
+        "android_client_info": {
+          "package_name": "com.example.miniappflutter"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyClOc7oBHJWyubjb_VTnH4NonaurPihEBA"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
