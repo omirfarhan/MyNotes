@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 # See https://www.dartlang.org/guides/libraries/private-files
 
 # Files and directories created by pub
@@ -29,6 +30,8 @@ doc/api/
 .flutter-plugins
 .flutter-plugins-dependencies
 
+=======
+>>>>>>> master
 # Miscellaneous
 *.class
 *.log
@@ -36,27 +39,54 @@ doc/api/
 *.swp
 .DS_Store
 .atom/
+<<<<<<< HEAD
+=======
+.build/
+>>>>>>> master
 .buildlog/
 .history
 .svn/
 .swiftpm/
 migrate_working_dir/
 
+<<<<<<< HEAD
 # IntelliJ / Android Studio
+=======
+# IntelliJ related
+>>>>>>> master
 *.iml
 *.ipr
 *.iws
 .idea/
 
+<<<<<<< HEAD
 # VS Code (optional)
 #.vscode/
 
+=======
+# The .vscode folder contains launch configuration and tasks you configure in
+# VS Code which you may wish to be included in version control, so this line
+# is commented out by default.
+#.vscode/
+
+# Flutter/Dart/Pub related
+**/doc/api/
+**/ios/Flutter/.last_build_id
+.dart_tool/
+.flutter-plugins-dependencies
+.pub-cache/
+.pub/
+/build/
+/coverage/
+
+>>>>>>> master
 # Symbolication related
 app.*.symbols
 
 # Obfuscation related
 app.*.map.json
 
+<<<<<<< HEAD
 # Android build artifacts
 /android/app/debug
 /android/app/profile
@@ -64,3 +94,9 @@ app.*.map.json
 
 # Coverage
 /coverage/
+=======
+# Android Studio will place build artifacts here
+/android/app/debug
+/android/app/profile
+/android/app/release
+>>>>>>> master
