@@ -88,7 +88,7 @@ class _LoginViewState extends State<LoginView> {
                           print(credential);
                         } on FirebaseAuthException catch (e){
                           if(e.code=='wrong-password'){
-                            Fluttertoast.showToast(msg: 'Wrong Password ');
+                            Fluttertoast.showToast(msg: 'Wrong Password please right password confirm');
                             print('Wrong password');
                           }
                         }
