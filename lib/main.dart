@@ -16,7 +16,12 @@ void main() {
       debugShowCheckedModeBanner: false,
       title: 'flutter demo',
         theme: ThemeData(primarySwatch: Colors.blue),
-        home: const Home()
+        home: const Home(),
+      routes: {
+        '/Register/': (context) =>const RegisterView(),
+        '/login/': (context) =>const LoginView(),
+      },
+
     ),
 
   );
@@ -28,43 +33,35 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Home Page'),
+    return  FutureBuilder(
+      future: Firebase.initializeApp(
+          options: DefaultFirebaseOptions.currentPlatform
       ),
+      builder: (context, snapshot) {
 
-      body: FutureBuilder(
-          future: Firebase.initializeApp(
-            options: DefaultFirebaseOptions.currentPlatform
-          ),
-          builder: (context, snapshot) {
+        switch(snapshot.connectionState){
 
-            switch(snapshot.connectionState){
+          case ConnectionState.done:
+            final user= FirebaseAuth.instance.currentUser;
+            print(user);
+            // if(user?.emailVerified??false){
+            //   print('You are verified user');
+            //
+            // }else{
+            //   print('you need to email verify first');
+            //
+            //   return const VerifyEmailView();
+            // }
 
-              case ConnectionState.done:
-                 final user= FirebaseAuth.instance.currentUser;
-                 print(user);
-                // if(user?.emailVerified??false){
-                //   print('You are verified user');
-                //
-                // }else{
-                //   print('you need to email verify first');
-                //
-                //   return const VerifyEmailView();
-                // }
+            return const LoginView();
+        //return const Text('Firebase is Connected');
+          default:
+            return const Text('Loading...');
 
-              return const LoginView();
-                //return const Text('Firebase is Connected');
-              default:
-                return const Text('Loading...');
+        }
 
-            }
+      },
 
-          },
-
-
-
-      ),
 
 
     );

@@ -67,56 +67,66 @@ class _RegisterViewState extends State<RegisterView> {
   }
 
      */
-    return Column(
-      children: [
-
-        TextField(
-          controller: _email,
-          enableSuggestions: false,
-          keyboardType: TextInputType.emailAddress,
-          autocorrect: false,
-          decoration: InputDecoration(labelText: 'Enter the email'),
-
-
-        ),
-
-        TextField(
-
-          controller: _password,
-          decoration: InputDecoration(labelText: 'Enter the password'),
-          autocorrect: false,
-          obscureText: true,
-          enableSuggestions: false,
-
-        ),
-
-        TextButton(
-            onPressed: () async {
-              final email = _email.text;
-              final password = _password.text;
-              try {
-                final credentital = await FirebaseAuth.instance
-                    .createUserWithEmailAndPassword(
-                    email: email,
-                    password: password
-                );
-                print(credentital);
-              } on FirebaseAuthException catch (e) {
-                if (e.code == 'email-already-in-use') {
-                  Fluttertoast.showToast(
-                      msg: "Email already used!");
-
-                  print('Alrady email is used');
+    return Scaffold(
+        appBar: AppBar(title: const Text('RegisterView'),),
+      body: Column(
+        children: [
+      
+          TextField(
+            controller: _email,
+            enableSuggestions: false,
+            keyboardType: TextInputType.emailAddress,
+            autocorrect: false,
+            decoration: InputDecoration(labelText: 'Enter the email'),
+      
+      
+          ),
+      
+          TextField(
+      
+            controller: _password,
+            decoration: InputDecoration(labelText: 'Enter the password'),
+            autocorrect: false,
+            obscureText: true,
+            enableSuggestions: false,
+      
+          ),
+      
+          TextButton(
+              onPressed: () async {
+                final email = _email.text;
+                final password = _password.text;
+                try {
+                  final credentital = await FirebaseAuth.instance
+                      .createUserWithEmailAndPassword(
+                      email: email,
+                      password: password
+                  );
+                  print(credentital);
+                } on FirebaseAuthException catch (e) {
+                  if (e.code == 'email-already-in-use') {
+                    Fluttertoast.showToast(
+                        msg: "Email already used!");
+      
+                    print('Alrady email is used');
+                  }
                 }
-              }
-            },
-            child: const Text('Register')
-
-        )
-
-      ],
-
-
+              },
+              child: const Text('Register')
+      
+          ),
+          TextButton(
+              onPressed: (){
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    '/login/', (route)=>false);
+              },
+              child: const Text('Already registerd? Login here!')
+          )
+      
+        ],
+      
+      
+      ),
     );
   }
 }
