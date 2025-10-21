@@ -46,7 +46,7 @@ class Home extends StatelessWidget {
             final user= FirebaseAuth.instance.currentUser;
             if(user!=null){
               if(user.emailVerified){
-                print('Email verified successfully');
+                return const NotesMainUI();
               }else{
                 return const VerifyEmailView();
               }
@@ -54,17 +54,8 @@ class Home extends StatelessWidget {
             }else{
               return const LoginView();
             }
-            // if(user?.emailVerified??false){
-            //   print('You are verified user');
-            //
-            // }else{
-            //   print('you need to email verify first');
-            //
-            //   return const VerifyEmailView();
-            // }
 
-
-        return const Text('Done');
+            
           default:
             return const CircularProgressIndicator();
 
@@ -77,6 +68,48 @@ class Home extends StatelessWidget {
     );
   }
 }
+
+enum MenuAction{
+  logout
+}
+
+class NotesMainUI extends StatefulWidget {
+  const NotesMainUI({super.key});
+
+  @override
+  State<NotesMainUI> createState() => _NotesMainUIState();
+}
+
+class _NotesMainUIState extends State<NotesMainUI> {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+
+      appBar: AppBar(
+        title: const Text('My Notes')
+        ,actions: [
+
+
+          PopupMenuButton<MenuAction>(
+              onSelected: (value) {},
+            itemBuilder: (context) {
+                return const[
+                  PopupMenuItem<MenuAction>(
+                    value: MenuAction.logout,
+                    child: Text('Log out'),)
+            ];
+
+            },
+          )
+
+      ],
+      ),
+      body: const Text('Hello my notes'),
+
+    );
+  }
+}
+
 
 
 
