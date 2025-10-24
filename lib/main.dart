@@ -22,6 +22,7 @@ void main() {
       routes: {
         '/Register/': (context) =>const RegisterView(),
         '/login/': (context) =>const LoginView(),
+        '/notes/': (context) =>const NotesMainUI(),
       },
 
     ),

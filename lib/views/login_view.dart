@@ -3,6 +3,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import '../firebase_options.dart';
+import 'dart:developer' as devtools show log;
 
 
 class LoginView extends StatefulWidget {
@@ -101,8 +102,14 @@ class _LoginViewState extends State<LoginView> {
               final credential= await FirebaseAuth.instance.
               signInWithEmailAndPassword(
                   email: email,
-                  password: password);
-              print(credential);
+                  password: password,
+              );
+
+              Navigator.of(context).pushNamedAndRemoveUntil(
+                  '/notes/', (route)=> false,
+              );
+              // print(credential);
+              debugPrint(credential.toString());
             } on FirebaseAuthException catch (e){
               if(e.code=='wrong-password'){
                 Fluttertoast.showToast(msg: 'Wrong Password please right password confirm');
