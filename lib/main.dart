@@ -2,11 +2,12 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:miniappflutter/constants/routes.dart';
 import 'package:miniappflutter/firebase_options.dart';
 import 'package:miniappflutter/views/Register_view.dart';
 import 'package:miniappflutter/views/login_view.dart';
 import 'package:miniappflutter/views/verify_emailview.dart';
-import 'dart:developer' as devtools show log;
+
 
 
 
@@ -20,9 +21,9 @@ void main() {
         theme: ThemeData(primarySwatch: Colors.blue),
         home: const Home(),
       routes: {
-        '/Register/': (context) =>const RegisterView(),
-        '/login/': (context) =>const LoginView(),
-        '/notes/': (context) =>const NotesMainUI(),
+        registerRoute : (context) =>const RegisterView(),
+        loginRoute : (context) =>const LoginView(),
+        mainuiRoute : (context) =>const NotesMainUI(),
       },
 
     ),
@@ -47,6 +48,7 @@ class Home extends StatelessWidget {
           case ConnectionState.done:
             final user= FirebaseAuth.instance.currentUser;
             if(user!=null){
+
               if(user.emailVerified){
                 return const NotesMainUI();
               }else{

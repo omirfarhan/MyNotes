@@ -1,9 +1,7 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import '../firebase_options.dart';
-import 'dart:developer' as devtools show log;
+import 'package:miniappflutter/constants/routes.dart';
 
 
 class LoginView extends StatefulWidget {
@@ -18,6 +16,7 @@ class LoginView extends StatefulWidget {
 class _LoginViewState extends State<LoginView> {
   late final TextEditingController _email;
   late final TextEditingController _password;
+
 
 
   @override
@@ -106,7 +105,7 @@ class _LoginViewState extends State<LoginView> {
               );
 
               Navigator.of(context).pushNamedAndRemoveUntil(
-                  '/notes/', (route)=> false,
+                  mainuiRoute, (route)=> false,
               );
               // print(credential);
               debugPrint(credential.toString());
@@ -127,7 +126,7 @@ class _LoginViewState extends State<LoginView> {
           TextButton(
               onPressed: () {
                 Navigator.of(context).pushNamedAndRemoveUntil(
-                    '/Register/', (route) =>false);
+                    registerRoute, (route) => false);
               }, 
               child: const Text('No register yet? Register here!')
           ),
