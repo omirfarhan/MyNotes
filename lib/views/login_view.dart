@@ -2,6 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:miniappflutter/constants/routes.dart';
+import 'package:miniappflutter/utilities/show_Error_Dialoge.dart';
 
 
 class LoginView extends StatefulWidget {
@@ -110,10 +111,21 @@ class _LoginViewState extends State<LoginView> {
               // print(credential);
               debugPrint(credential.toString());
             } on FirebaseAuthException catch (e){
+
+
+
               if(e.code=='wrong-password'){
+
+                await showErrorDialoge(context, 'wrong password');
                 Fluttertoast.showToast(msg: 'Wrong Password please right password confirm');
-                print('Wrong password');
+
+              }else if(e.code=='user-not-found'){
+                await showErrorDialoge(context, 'invalid credential');
+              }else{
+                await showErrorDialoge(context, 'Error: ${e.code}');
               }
+            }catch (e){
+              await showErrorDialoge(context, e.toString());
             }
       
       
