@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:miniappflutter/constants/routes.dart';
+import 'package:miniappflutter/utilities/show_Error_Dialoge.dart';
 
 
 class RegisterView extends StatefulWidget {
@@ -98,19 +99,26 @@ class _RegisterViewState extends State<RegisterView> {
                 final email = _email.text;
                 final password = _password.text;
                 try {
-                  final credentital = await FirebaseAuth.instance
+                  await FirebaseAuth.instance
                       .createUserWithEmailAndPassword(
                       email: email,
                       password: password
                   );
-                  print(credentital);
+
+                  Navigator.of(context).pushNamed(verifyemailRoute);
+                 // print(credentital);
                 } on FirebaseAuthException catch (e) {
                   if (e.code == 'email-already-in-use') {
                     Fluttertoast.showToast(
                         msg: "Email already used!");
-      
-                    print('Alrady email is used');
+                    await showErrorDialoge(context, 'Email already used!');
+                  }else if(e.code=='weak-password'){
+                    await showErrorDialoge(context, 'Week password please ensure strong password');
+                  }else{
+                    await showErrorDialoge(context, 'Error: ${e.code}');
                   }
+                }catch (e){
+                  await showErrorDialoge(context, e.toString());
                 }
               },
               child: const Text('Register')
