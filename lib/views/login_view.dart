@@ -1,4 +1,5 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:miniappflutter/constants/routes.dart';
@@ -105,11 +106,19 @@ class _LoginViewState extends State<LoginView> {
                   password: password,
               );
 
-              Navigator.of(context).pushNamedAndRemoveUntil(
-                  mainuiRoute, (route)=> false,
-              );
+              final user= await FirebaseAuth.instance.currentUser;
+
+              if(user?.emailVerified??false){
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    mainuiRoute, (route) => false);
+              }else{
+                Navigator.of(context).pushNamedAndRemoveUntil(
+                    verifyemailRoute, (route)=>false);
+              }
+
+
               // print(credential);
-              debugPrint(credential.toString());
+             // debugPrint(credential.toString());
             } on FirebaseAuthException catch (e){
 
 
