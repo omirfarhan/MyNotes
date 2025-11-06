@@ -1,10 +1,12 @@
-import 'package:firebase_auth/firebase_auth.dart';
-import 'package:firebase_core/firebase_core.dart';
+
+
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:miniappflutter/constants/routes.dart';
+import 'package:miniappflutter/services/auth/auth_services.dart';
 import 'package:miniappflutter/utilities/show_Error_Dialoge.dart';
 
+import 'package:miniappflutter/services/auth/auth_exceptions.dart';
 
 class LoginView extends StatefulWidget {
   const LoginView({super.key});
@@ -100,15 +102,13 @@ class _LoginViewState extends State<LoginView> {
             final password=_password.text;
       
             try{
-              final credential= await FirebaseAuth.instance.
-              signInWithEmailAndPassword(
+              await AuthServices.firebase().logIn(
                   email: email,
-                  password: password,
-              );
+                  password: password);
+               final user=  AuthServices.firebase().currentuser;
 
-              final user= await FirebaseAuth.instance.currentUser;
 
-              if(user?.emailVerified??false){
+              if(user?.isEmailverified??false){
                 Navigator.of(context).pushNamedAndRemoveUntil(
                     mainuiRoute, (route) => false);
               }else{
@@ -116,26 +116,27 @@ class _LoginViewState extends State<LoginView> {
                     verifyemailRoute, (route)=>false);
               }
 
+            } on UsernotFoundAuthException {
 
-              // print(credential);
-             // debugPrint(credential.toString());
-            } on FirebaseAuthException catch (e){
+              await showErrorDialoge(
+                  context,
+                  'invalid credential'
+              );
 
+            }on WrongPasswordAuthException{
+              await showErrorDialoge(context, 'wrong password');
+              Fluttertoast.showToast(msg: 'Wrong Password please right password confirm');
 
-
-              if(e.code=='wrong-password'){
-
-                await showErrorDialoge(context, 'wrong password');
-                Fluttertoast.showToast(msg: 'Wrong Password please right password confirm');
-
-              }else if(e.code=='user-not-found'){
-                await showErrorDialoge(context, 'invalid credential');
-              }else{
-                await showErrorDialoge(context, 'Error: ${e.code}');
-              }
-            }catch (e){
-              await showErrorDialoge(context, e.toString());
             }
+
+            on GenericEmailAuthException {
+              await showErrorDialoge(
+                  context,
+                  'Authentication error'
+              );
+            }
+
+
       
       
           },

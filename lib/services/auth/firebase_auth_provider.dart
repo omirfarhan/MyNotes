@@ -1,3 +1,5 @@
+import 'package:firebase_core/firebase_core.dart';
+import 'package:miniappflutter/firebase_options.dart';
 import 'package:miniappflutter/services/auth/auth_user.dart';
 import 'package:miniappflutter/services/auth/Auth_provider.dart';
 import 'package:miniappflutter/services/auth/auth_exceptions.dart';
@@ -60,10 +62,10 @@ class FirebaseAuthProvider implements AuthProvider{
     required String password,
   }) async {
     try{
+
      await FirebaseAuth.instance.signInWithEmailAndPassword(
           email: email,
           password: password);
-
      final user=currentuser;
      if(user!=null){
        return user;
@@ -99,13 +101,22 @@ class FirebaseAuthProvider implements AuthProvider{
 
   @override
   Future<void> sendEmailverification() async{
-   final user=FirebaseAuth.instance.currentUser;
+   final user= await FirebaseAuth.instance.currentUser;
+
    if(user!=null){
      await user.sendEmailVerification();
    }else{
      throw UserNotloggedinAuthException();
    }
 
+  }
+
+  @override
+  Future<void> initalize() async {
+
+   await Firebase.initializeApp(
+      options: DefaultFirebaseOptions.currentPlatform
+    );
   }
 
 

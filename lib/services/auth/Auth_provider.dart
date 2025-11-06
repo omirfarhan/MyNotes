@@ -6,6 +6,8 @@ abstract class AuthProvider{
   //currentuser = এ মুহূর্তে কে logged in আছে” — সেই user-এর তথ্য দেওয়া।
   AuthUser? get currentuser;
 
+  Future<void> initalize();
+
   Future<AuthUser> logIn({
     required String email,
     required String password,

@@ -1,11 +1,12 @@
 
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:miniappflutter/constants/routes.dart';
+import 'package:miniappflutter/services/auth/auth_services.dart';
 import 'package:miniappflutter/utilities/show_Error_Dialoge.dart';
 
+import 'package:miniappflutter/services/auth/auth_exceptions.dart';
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
@@ -99,27 +100,31 @@ class _RegisterViewState extends State<RegisterView> {
                 final email = _email.text;
                 final password = _password.text;
                 try {
-                  await FirebaseAuth.instance
-                      .createUserWithEmailAndPassword(
+                  await AuthServices.firebase().createUser(
                       email: email,
-                      password: password
-                  );
+                      password: password);
 
+                  await AuthServices.firebase().sendEmailverification();
                   Navigator.of(context).pushNamed(verifyemailRoute);
                  // print(credentital);
-                } on FirebaseAuthException catch (e) {
-                  if (e.code == 'email-already-in-use') {
-                    Fluttertoast.showToast(
-                        msg: "Email already used!");
-                    await showErrorDialoge(context, 'Email already used!');
-                  }else if(e.code=='weak-password'){
-                    await showErrorDialoge(context, 'Week password please ensure strong password');
-                  }else{
-                    await showErrorDialoge(context, 'Error: ${e.code}');
-                  }
-                }catch (e){
-                  await showErrorDialoge(context, e.toString());
+                }on EmailAreadyInuseAuthException{
+                  Fluttertoast.showToast(
+                      msg: "Email already used!");
+                  await showErrorDialoge(context,
+                    'Email already used!',
+                  );
+
+                }on WeekPasswordAuthException{
+                  await showErrorDialoge(context,
+                      'Week password please ensure strong password',
+                  );
+
+                }on GenericEmailAuthException{
+                  await showErrorDialoge(context,
+                      'Faild to register'
+                  );
                 }
+
               },
               child: const Text('Register')
       
