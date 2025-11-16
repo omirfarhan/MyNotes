@@ -36,7 +36,7 @@ class NoteServices{
     final db=_getDatabaseorThrow();
     final notes=await db.query(noteTable);
 
-    // here code could not complete
+
    return notes.map((noteRow) =>DatabaseNote.fromRow(noteRow) );
   }
 
@@ -77,10 +77,11 @@ class NoteServices{
 
   }
 
-  Future<DatabaseNote> createNote({required DatabaseUser owner})async{
+  Future<DatabaseNote> createNote({required DatabaseUser owner})  async {
 
     final db=_getDatabaseorThrow();
     final dbuser=await getUser(email: owner.email);
+
     if(dbuser!=owner){
       throw couldNotFindeUser();
     }
@@ -103,12 +104,12 @@ class NoteServices{
 
   }
 
-  Future<DatabaseUser> getUser({required String email}) async{
+  Future<DatabaseUser> getUser ({ required String email }) async {
     final db=_getDatabaseorThrow();
     final result=await db.query(
-        userTable,
+      userTable,
       limit: 1,
-      where:  'email=?',
+      where:  ' email= ? ',
       whereArgs: [email.toLowerCase()],
     );
 
@@ -230,8 +231,9 @@ class DatabaseUser{
     required this.email,
   });
 
-  DatabaseUser.fromRow(Map<String, Object?> map) : id=map[idColumn] as int,
-  email=map[emailColumn]  as String;
+  DatabaseUser.fromRow(Map<String, Object?> map) :
+        id=map[idColumn] as int,
+        email=map[emailColumn]  as String;
 
   @override
   String toString() => 'Person, ID=$id, email=$email';
@@ -260,9 +262,11 @@ class DatabaseNote{
     required this.isSyncedwithcloud
   });
 
+  // fromRow is defined DatabaseNote of constructor
+  //mane fromRow holo DatabaseNote er constructor
   DatabaseNote.fromRow(Map<String,Object?> map) :
   id=map[idColumn] as int,
-  text=map[emailColumn] as String,
+  text=map[textcolumn] as String,
   userId=map[userIdColumn] as int,
 
   isSyncedwithcloud=(map[isSyncedwithCloud] as int) ==1? true : false;
