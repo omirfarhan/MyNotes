@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:miniappflutter/services/auth/auth_services.dart';
+import 'package:miniappflutter/services/crud/notes_service.dart';
 
 import 'enums/menu_action.dart';
 
@@ -12,6 +13,25 @@ class NotesMainUI extends StatefulWidget {
 }
 
 class _NotesMainUIState extends State<NotesMainUI> {
+
+  late final NoteServices _noteServices;
+  String get userEmail=> AuthServices.firebase().currentuser!.Email!;
+
+
+  @override
+  void initState() {
+    _noteServices=NoteServices();
+
+    super.initState();
+  }
+
+
+  @override
+  void dispose() {
+    _noteServices.close();
+    super.dispose();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
