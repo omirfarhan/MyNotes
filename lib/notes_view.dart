@@ -21,7 +21,6 @@ class _NotesMainUIState extends State<NotesMainUI> {
   @override
   void initState() {
     _noteServices=NoteServices();
-
     super.initState();
   }
 
@@ -78,7 +77,39 @@ class _NotesMainUIState extends State<NotesMainUI> {
 
       ],
       ),
-      body: const Text('Hello my notes'),
+      body: FutureBuilder(
+          future: _noteServices.getorCreateuser(email: userEmail),
+
+          builder: (context, snapshot) {
+            switch(snapshot.connectionState){
+
+
+              case ConnectionState.done:
+                return StreamBuilder(
+                    stream: _noteServices.allNotes,
+                    builder: (context, snapshot) {
+
+                      switch(snapshot.connectionState){
+
+                        case ConnectionState.waiting:
+                          return const Text("Waiting for all notes");
+
+                        }
+
+                      Default:
+                      return const CircularProgressIndicator();
+
+                    },
+
+
+                  );
+
+                Default:
+                return const CircularProgressIndicator();
+            }
+          },
+
+      ),
 
     );
   }
