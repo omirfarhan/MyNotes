@@ -2,12 +2,14 @@
 
 import 'package:flutter/material.dart';
 import 'package:miniappflutter/constants/routes.dart';
+import 'package:miniappflutter/notes/new_note_view.dart';
 import 'package:miniappflutter/services/auth/auth_services.dart';
 import 'package:miniappflutter/views/Register_view.dart';
 import 'package:miniappflutter/views/login_view.dart';
 import 'package:miniappflutter/views/verify_emailview.dart';
+import 'package:path/path.dart';
 
-import 'notes_view.dart';
+import 'notes/notes_view.dart';
 
 
 
@@ -26,6 +28,7 @@ void main() {
         loginRoute : (context) =>const LoginView(),
         mainuiRoute : (context) =>const NotesMainUI(),
         verifyemailRoute: (context) => const VerifyEmailView(),
+        newnotesRoute: (context) => const NewNoteView(),
 
       },
 

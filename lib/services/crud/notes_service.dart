@@ -20,6 +20,11 @@ class NoteServices{
 
   List<DatabaseNote> _notes= [];
 
+  static final NoteServices _shared=NoteServices._shareInstance();
+  NoteServices._shareInstance();
+  factory NoteServices() => _shared;
+
+
   final _notesStreamController=
   StreamController<List<DatabaseNote>>.broadcast();
 

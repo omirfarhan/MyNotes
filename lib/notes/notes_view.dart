@@ -1,9 +1,10 @@
 
 import 'package:flutter/material.dart';
+import 'package:miniappflutter/constants/routes.dart';
 import 'package:miniappflutter/services/auth/auth_services.dart';
 import 'package:miniappflutter/services/crud/notes_service.dart';
 
-import 'enums/menu_action.dart';
+import '../enums/menu_action.dart';
 
 class NotesMainUI extends StatefulWidget {
   const NotesMainUI({super.key});
@@ -38,6 +39,12 @@ class _NotesMainUIState extends State<NotesMainUI> {
       appBar: AppBar(
         title: const Text('My Notes')
         ,actions: [
+
+          IconButton(
+              onPressed: () {
+                Navigator.of(context).pushNamed(newnotesRoute);
+              }, icon: Icon(Icons.add)
+          ),
 
         PopupMenuButton<MainAction>(
           onSelected: (value) async {
@@ -83,7 +90,6 @@ class _NotesMainUIState extends State<NotesMainUI> {
           builder: (context, snapshot) {
             switch(snapshot.connectionState){
 
-
               case ConnectionState.done:
                 return StreamBuilder(
                     stream: _noteServices.allNotes,
@@ -92,20 +98,19 @@ class _NotesMainUIState extends State<NotesMainUI> {
                       switch(snapshot.connectionState){
 
                         case ConnectionState.waiting:
-                          return const Text("Waiting for all notes");
+                          return const Text("Waiting for all notes...");
+
+
+                        default:
+                          return const CircularProgressIndicator();
 
                         }
-
-                      Default:
-                      return const CircularProgressIndicator();
-
                     },
-
-
                   );
 
-                Default:
+                default:
                 return const CircularProgressIndicator();
+
             }
           },
 
