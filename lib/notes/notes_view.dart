@@ -54,7 +54,7 @@ class _NotesMainUIState extends State<NotesMainUI> {
                 final showlogout= await showLogoutDialoge(context);
 
                 if(showlogout){
-                  //await dewa hoy nai karon age use korsi
+
                  await AuthServices.firebase().logout();
                   //await FirebaseAuth.instance.signOut();
                   Navigator.of(context).pushNamedAndRemoveUntil(
