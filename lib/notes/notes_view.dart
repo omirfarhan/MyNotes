@@ -26,11 +26,11 @@ class _NotesMainUIState extends State<NotesMainUI> {
   }
 
 
-  @override
-  void dispose() {
-    _noteServices.close();
-    super.dispose();
-  }
+  // @override
+  // void dispose() {
+  //   _noteServices.close();
+  //   super.dispose();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -98,8 +98,23 @@ class _NotesMainUIState extends State<NotesMainUI> {
                       switch(snapshot.connectionState){
 
                         case ConnectionState.waiting:
-                          return const Text("Waiting for all notes...");
+                         // return const Text("Waiting for all notes...");
+                        case ConnectionState.active:
+                        if(snapshot.hasData){
+                          final datas=snapshot.data as List<DatabaseNote>;
 
+                          return ListView.builder(
+                            itemCount: datas.length,
+                            itemBuilder: (context, index) {
+                              final note=datas[index];
+                              return ListTile(
+                                title: Text(note.text),
+                              );
+                            },
+                          );
+                        }else{
+                          return const Text('wait please not working');
+                        }
 
                         default:
                           return const CircularProgressIndicator();

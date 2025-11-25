@@ -21,12 +21,18 @@ class NoteServices{
   List<DatabaseNote> _notes= [];
 
   static final NoteServices _shared=NoteServices._shareInstance();
-  NoteServices._shareInstance();
+  NoteServices._shareInstance(){
+    _notesStreamController =StreamController<List<DatabaseNote>>.broadcast(
+      onListen: () {
+        _notesStreamController.sink.add(_notes);
+      },
+    );
+  }
   factory NoteServices() => _shared;
 
+  late final StreamController<List<DatabaseNote>> _notesStreamController;
 
-  final _notesStreamController=
-  StreamController<List<DatabaseNote>>.broadcast();
+  //final _notesStreamController=StreamController<List<DatabaseNote>>.broadcast();
 
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
@@ -362,4 +368,4 @@ const emailColumn='email';
 
 const userIdColumn='user_id';
 const textcolumn='text';
-const isSyncedwithCloud='isSynced_with_email';
+const isSyncedwithCloud='is_synced_with_cloud';
