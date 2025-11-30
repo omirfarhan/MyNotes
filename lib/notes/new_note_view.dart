@@ -16,7 +16,7 @@ class _NewNoteViewState extends State<NewNoteView> {
   DatabaseNote? _note;
 
   late final NoteServices _noteServices;
-  late final TextEditingController  _textcontroller;
+  late final TextEditingController _textcontroller;
 
   Future<DatabaseNote> createNote()async{
     final existingNote=_note;
@@ -97,7 +97,7 @@ class _NewNoteViewState extends State<NewNoteView> {
             switch(snapshot.connectionState){
 
               case ConnectionState.done:
-                //_note=snapshot.data as DatabaseNote;
+                 _note=snapshot.data ;
                 _setupTextControllerlistener();
 
                 return TextField(

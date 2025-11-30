@@ -36,6 +36,7 @@ class NoteServices{
 
   Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
 
+
   Future<void> ensureDbInopen() async{
     try{
       await open();
@@ -69,8 +70,13 @@ class NoteServices{
     await getNote(id: note.id);
     final updatecount=await db.update(noteTable, {
       textcolumn: text,
-      isSyncedwithCloud: 0,
-    });
+      isSyncedWithCloudColumn: 0,
+
+    },
+      where: 'id = ?',
+      whereArgs: [note.id],
+
+    );
 
     if(updatecount==0){
       throw couldNotUpdateNote();
@@ -84,7 +90,7 @@ class NoteServices{
 
   }
 
-  Future< Iterable<DatabaseNote> > getallNotes() async{
+  Future<Iterable<DatabaseNote> > getallNotes() async{
     await ensureDbInopen();
     final db=_getDatabaseorThrow();
     final notes=await db.query(noteTable);
@@ -157,10 +163,10 @@ class NoteServices{
     }
 
     const text='';
-    final noteId=await db.insert(
-        noteTable, { userIdColumn: owner.id,
+    final noteId=await db.insert(noteTable, {
+        userIdColumn: owner.id,
         textcolumn: text,
-        isSyncedwithCloud: 1
+        isSyncedWithCloudColumn: 1
         });
 
     final note=DatabaseNote(
@@ -282,21 +288,21 @@ class NoteServices{
 
 
 
-const createUserTable=''' CREATE TABLE IF NOT EXISTS "user" (
+const createUserTable='''CREATE TABLE IF NOT EXISTS "user" (
 	          "id"	INTEGER NOT NULL,
 	         "email"	TEXT NOT NULL UNIQUE,
 	         PRIMARY KEY("id" AUTOINCREMENT
 	         )
-);  ''';
+);''';
 
-const createNoteTable=''' CREATE TABLE IF NOT EXISTS "note" (
+const createNoteTable='''CREATE TABLE IF NOT EXISTS "note" (
 	        "id"	INTEGER NOT NULL,
 	        "user_id"	INTEGER NOT NULL,
 	        "text"	TEXT,
 	        "is_synced_with_cloud"	INTEGER NOT NULL DEFAULT 0,
 	         FOREIGN KEY("user_id") REFERENCES "user"("id"),
 	         PRIMARY KEY("id" AUTOINCREMENT)
-);  ''';
+);''';
 
 @immutable
 class DatabaseUser{
@@ -346,10 +352,13 @@ class DatabaseNote{
   text=map[textcolumn] as String,
   userId=map[userIdColumn] as int,
 
-  isSyncedwithcloud=(map[isSyncedwithCloud] as int) ==1? true : false;
+  isSyncedwithcloud=(map[isSyncedWithCloudColumn] as int) == 1 ? true : false;
+
+
 
   @override
-  String toString() => 'Note, ID=$id, user_id=$userId, isSyncedwithCloud=$isSyncedwithcloud, text=$text';
+  String toString() =>
+      'Note, ID=$id, user_id=$userId, isSyncedwithcloud=$isSyncedwithcloud, text=$text';
 
   @override
   bool operator == (covariant DatabaseNote other) => id == other.id;
@@ -368,4 +377,4 @@ const emailColumn='email';
 
 const userIdColumn='user_id';
 const textcolumn='text';
-const isSyncedwithCloud='is_synced_with_cloud';
+const isSyncedWithCloudColumn='is_synced_with_cloud';

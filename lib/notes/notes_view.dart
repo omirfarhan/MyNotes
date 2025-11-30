@@ -89,26 +89,36 @@ class _NotesMainUIState extends State<NotesMainUI> {
 
           builder: (context, snapshot) {
             switch(snapshot.connectionState){
-
               case ConnectionState.done:
                 return StreamBuilder(
                     stream: _noteServices.allNotes,
                     builder: (context, snapshot) {
 
                       switch(snapshot.connectionState){
-
                         case ConnectionState.waiting:
-                         // return const Text("Waiting for all notes...");
                         case ConnectionState.active:
+
                         if(snapshot.hasData){
                           final datas=snapshot.data as List<DatabaseNote>;
 
+                          debugPrint("TOTAL NOTES = ${datas.length}");
+
                           return ListView.builder(
+                            
                             itemCount: datas.length,
                             itemBuilder: (context, index) {
+
+
                               final note=datas[index];
+                              debugPrint("Note $index text = '${note.text}'");
                               return ListTile(
+                                onTap: () {
+                                  
+                                },
                                 title: Text(note.text),
+                                trailing: Icon(Icons.disabled_by_default_rounded,
+                                  color: Colors.red,
+                                ),
                               );
                             },
                           );
