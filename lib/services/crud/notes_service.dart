@@ -68,6 +68,7 @@ class NoteServices{
     await ensureDbInopen();
     final db=_getDatabaseorThrow();
     await getNote(id: note.id);
+
     final updatecount=await db.update(noteTable, {
       textcolumn: text,
       isSyncedWithCloudColumn: 0,
@@ -247,6 +248,7 @@ class NoteServices{
     }else{
       return db;
     }
+
   }
 
   Future<void> close() async{

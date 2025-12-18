@@ -1,6 +1,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:miniappflutter/constants/routes.dart';
+import 'package:miniappflutter/notes/note_list_view.dart';
 import 'package:miniappflutter/services/auth/auth_services.dart';
 import 'package:miniappflutter/services/crud/notes_service.dart';
 
@@ -98,30 +99,16 @@ class _NotesMainUIState extends State<NotesMainUI> {
                         case ConnectionState.waiting:
                         case ConnectionState.active:
 
-                        if(snapshot.hasData){
+                        if(snapshot.hasData) {
                           final datas=snapshot.data as List<DatabaseNote>;
 
-                          debugPrint("TOTAL NOTES = ${datas.length}");
-
-                          return ListView.builder(
-                            
-                            itemCount: datas.length,
-                            itemBuilder: (context, index) {
-
-
-                              final note=datas[index];
-                              debugPrint("Note $index text = '${note.text}'");
-                              return ListTile(
-                                onTap: () {
-                                  
-                                },
-                                title: Text(note.text),
-                                trailing: Icon(Icons.disabled_by_default_rounded,
-                                  color: Colors.red,
-                                ),
-                              );
-                            },
+                          return NotesListView(
+                              notes: datas,
+                              onDeleteNote:(note) async{
+                                _noteServices.deleteNote(id: note.id);
+                              },
                           );
+
                         }else{
                           return const Text('wait please not working');
                         }
