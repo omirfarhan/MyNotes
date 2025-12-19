@@ -4,9 +4,11 @@ import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:miniappflutter/constants/routes.dart';
 import 'package:miniappflutter/services/auth/auth_services.dart';
-import 'package:miniappflutter/utilities/show_Error_Dialoge.dart';
+
 
 import 'package:miniappflutter/services/auth/auth_exceptions.dart';
+import 'package:miniappflutter/utilities/error_dialoge_login_register.dart';
+
 
 class RegisterView extends StatefulWidget {
   const RegisterView({super.key});
