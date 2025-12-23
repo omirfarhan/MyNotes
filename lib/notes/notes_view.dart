@@ -44,15 +44,15 @@ class _NotesMainUIState extends State<NotesMainUI> {
 
           IconButton(
               onPressed: () {
-                Navigator.of(context).pushNamed(newnotesRoute);
+                Navigator.of(context).pushNamed(createOrUpdateNoteRoute);
               }, icon: Icon(Icons.add)
           ),
 
         PopupMenuButton<MainAction>(
           onSelected: (value) async {
             switch(value)  {
-
               case MainAction.logout:
+
                 final showlogout= await showLogoutDialoge(context);
 
                 if(showlogout){
@@ -108,6 +108,12 @@ class _NotesMainUIState extends State<NotesMainUI> {
                               onDeleteNote:(note) async{
                                 _noteServices.deleteNote(id: note.id);
                               },
+                            onTap: (note) {
+                                Navigator.of(context).pushNamed(
+                                    createOrUpdateNoteRoute,
+                                  arguments: note
+                                );
+                            },
                           );
 
                         }else{

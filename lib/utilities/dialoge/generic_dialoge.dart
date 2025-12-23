@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 typedef DialogeOptionBuilder<T> = Map<String, T?> Function();
-
 Future<T?> showGenericDialoge<T> ({
   required BuildContext context,
   required String title,
@@ -11,7 +10,6 @@ Future<T?> showGenericDialoge<T> ({
   required DialogeOptionBuilder optionBuilder,
 }) {
   final  option = optionBuilder();
-
   return showDialog(
       context: context,
       builder: (context) {
@@ -35,5 +33,4 @@ Future<T?> showGenericDialoge<T> ({
         );
       },
   );
-
 }

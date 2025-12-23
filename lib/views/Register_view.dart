@@ -112,6 +112,7 @@ class _RegisterViewState extends State<RegisterView> {
                 }on EmailAreadyInuseAuthException{
                   Fluttertoast.showToast(
                       msg: "Email already used!");
+
                   await showErrorDialoge(context,
                     'Email already used!',
                   );

@@ -3,22 +3,31 @@ import 'package:flutter/material.dart';
 import 'package:miniappflutter/services/auth/auth_services.dart';
 import 'package:miniappflutter/services/auth/auth_user.dart';
 import 'package:miniappflutter/services/crud/notes_service.dart';
+import 'package:miniappflutter/utilities/generics/get_arguments.dart';
 
-class NewNoteView extends StatefulWidget {
-  const NewNoteView({super.key});
+class CreateUpdateNote extends StatefulWidget {
+  const CreateUpdateNote({super.key});
 
   @override
-  State<NewNoteView> createState() => _NewNoteViewState();
+  State<CreateUpdateNote> createState() => _CreateUpdateNoteState();
 }
 
-class _NewNoteViewState extends State<NewNoteView> {
+class _CreateUpdateNoteState extends State<CreateUpdateNote> {
 
   DatabaseNote? _note;
 
   late final NoteServices _noteServices;
   late final TextEditingController _textcontroller;
 
-  Future<DatabaseNote> createNote()async{
+  Future<DatabaseNote> createNote(BuildContext context)async{
+
+    final widgetNote=context.arguments<DatabaseNote>();
+    if(widgetNote != null){
+      _note = widgetNote;
+      _textcontroller.text=widgetNote.text;
+      return widgetNote;
+    }
+
     final existingNote=_note;
 
     if(existingNote != null){
@@ -28,8 +37,9 @@ class _NewNoteViewState extends State<NewNoteView> {
     final currentUser=  AuthServices.firebase().currentuser!;
     final email= currentUser.Email!;
     final owner=await _noteServices.getUser(email: email);
-    return await _noteServices.createNote(owner: owner);
-
+    final newnote= await _noteServices.createNote(owner: owner);
+    _note=newnote;
+    return newnote;
 
   }
 
@@ -92,12 +102,12 @@ class _NewNoteViewState extends State<NewNoteView> {
         title: const Text('New Note'),
       ),
       body: FutureBuilder(
-          future: createNote(),
+          future: createNote(context),
           builder: (context, snapshot) {
             switch(snapshot.connectionState){
 
               case ConnectionState.done:
-                 _note=snapshot.data ;
+
                 _setupTextControllerlistener();
 
                 return TextField(
