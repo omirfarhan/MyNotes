@@ -1,6 +1,7 @@
 import 'dart:async';
 
 import 'package:flutter/cupertino.dart';
+import 'package:miniappflutter/extensions/list/filter.dart';
 import 'package:sqflite/sqflite.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:path/path.dart';
@@ -13,11 +14,12 @@ class userAlreadyExists implements Exception {}
 class couldNotFindeUser implements Exception {}
 class couldNotFindNote implements Exception {}
 class couldNotUpdateNote implements Exception {}
+class UserShouldBeSetBeforeReadingAllNotes implements Exception{}
 
 
 class NoteServices{
   Database? _db;
-
+  DatabaseUser? _user;
   List<DatabaseNote> _notes= [];
 
   static final NoteServices _shared=NoteServices._shareInstance();
@@ -34,7 +36,16 @@ class NoteServices{
 
   //final _notesStreamController=StreamController<List<DatabaseNote>>.broadcast();
 
-  Stream<List<DatabaseNote>> get allNotes => _notesStreamController.stream;
+  Stream<List<DatabaseNote>> get allNotes =>
+  _notesStreamController.stream.filter((note) {
+    final currentuser=_user;
+
+    if(currentuser != null){
+      return note.userId == currentuser.id;
+    }else{
+      throw UserShouldBeSetBeforeReadingAllNotes();
+    }
+  },);
 
 
   Future<void> ensureDbInopen() async{
@@ -45,12 +56,25 @@ class NoteServices{
     }
   }
 
-  Future<DatabaseUser> getorCreateuser({required String email}) async{
+  Future<DatabaseUser> getorCreateuser({
+    required String email,
+    bool setCurrentUser= true,
+  }) async{
     try{
       final user=await getUser(email: email);
+
+      if(setCurrentUser){
+        _user=user;
+      }
+
       return user;
     }on couldNotFindeUser{
       final createdUser=await createUser(email: email);
+
+      if(setCurrentUser){
+        _user =createdUser;
+      }
+
       return createdUser;
     } catch (e){
       rethrow;
